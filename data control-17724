@@ -1,0 +1,18 @@
+var convertDate = function(usDate) {
+  var dateParts = usDate.split(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  return dateParts[3] + "/" + dateParts[1] + "/" + dateParts[2];
+}
+    $scope.sort_income_orders_by_date = function (data) {
+
+        // // console.log( $('#pickup').val());
+        // // console.log($('#return').val());
+        // var dt_from = $('#pickup').val();
+        // var dt_from_arr = dt_from.split("/");
+
+        var from_date=convertDate(($('#pickup').val()));
+        var to_date=convertDate(($('#return').val()));
+        
+     
+          console.log(from_date);
+          console.log(to_date);
+    }
