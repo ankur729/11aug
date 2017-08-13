@@ -1,0 +1,19 @@
+     
+     // var date = new Date('2017/08/05').getTime();
+     
+     
+     // db.order_infos.find(
+
+        //     {time : {   
+        //         '$gte': 1501909200000,
+        //         '$lte': 1502341200000
+        //     }
+        //     }
+
+        //     , function (err, data) {
+
+   
+        //         console.log(data.length);
+        //         res.send(data);
+        //     }
+        // );
