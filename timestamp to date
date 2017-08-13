@@ -1,0 +1,4 @@
+var time="1498712600061";
+//var dateString =moment.unix(time).format("DD/MM/YYYY");
+var dateString=moment("1498712600061", "x").format("DD MMM YYYY hh:mm a") ;
+res.send(dateString);
