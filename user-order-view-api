@@ -1,18 +1,19 @@
 router
     .post('/api-test', function (req, res, next) {
 
-        var final_coll = [];
+        var order_coll ={}
 
         var delivered_orders = {};
         var cancelled_orders = {};
         var open_orders = {};
-        var temp_obj = {};
+
 
         db.order_infos.find(
 
             {
                 $and: [{ user_id: mongojs.ObjectId('59158a3ebab3ea5cfdbc27c3') },
                 { order_status: 'delivered' }
+              
                 ]
             }
 
@@ -29,13 +30,13 @@ router
                 if (del_response.length > 0) {
 
 
-                    temp_obj.delivered_orders = del_response;
-                    final_coll.push(temp_obj);
+                    order_coll.delivered_orders = del_response;
+                 
                 }
                 else {
 
-                    temp_obj.delivered_orders = [];
-                    final_coll.push(temp_obj);
+                    order_coll.delivered_orders = [];
+                   
                 }
 
                 // 2 nd Callback
@@ -45,6 +46,7 @@ router
                     {
                         $and: [{ user_id: mongojs.ObjectId('59158a3ebab3ea5cfdbc27c3') },
                         { order_status: { $in: ['pending', 'confirmed', 'ready_for_del'] } }
+                       
                         ]
                     }
 
@@ -60,14 +62,14 @@ router
                         //  res.send(del_response);
                         if (open_response.length > 0) {
 
-                            temp_obj.open_orders = open_response;
-                            final_coll.push(temp_obj);
+                            order_coll.open_orders = open_response;
+                          
 
                         }
                         else {
 
-                            temp_obj.open_orders = [];
-                            final_coll.push(temp_obj);
+                            order_coll.open_orders = [];
+                           
                         }
 
 
@@ -78,6 +80,7 @@ router
                             {
                                 $and: [{ user_id: mongojs.ObjectId('59158a3ebab3ea5cfdbc27c3') },
                                 { order_status: { $in: ['cancelled'] } }
+                              
                                 ]
                             }
 
@@ -93,18 +96,18 @@ router
                                 //  res.send(del_response);
                                 if (cancel_response.length > 0) {
 
-                                    temp_obj.cancelled_orders = cancel_response;
-                                    final_coll.push(temp_obj);
+                                    order_coll.cancelled_orders = cancel_response;
+                                    
 
                                 }
                                 else {
 
-                                    temp_obj.cancelled_orders = [];
-                                    final_coll.push(temp_obj);
+                                    order_coll.cancelled_orders = [];
+                                   
                                 }
 
 
-                                res.send(final_coll);
+                                res.send(order_coll);
 
                             }
                         });
