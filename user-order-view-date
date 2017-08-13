@@ -1,0 +1,138 @@
+  router
+    .post('/api-test', function (req, res, next) {
+
+        var order_coll ={}
+
+        var delivered_orders = {};
+        var cancelled_orders = {};
+        var open_orders = {};
+
+
+        db.order_infos.find(
+
+            {
+                $and: [{ user_id: mongojs.ObjectId('59158a3ebab3ea5cfdbc27c3') },
+                { order_status: 'delivered' },
+                { date: '21/07/2017'}
+                ]
+            }
+
+        ).sort({ '_id': -1 }, function (err, del_response) {
+
+
+            if (err) {
+
+                res.send(err);
+
+            }
+            else {
+                //      res.send(del_response);
+                if (del_response.length > 0) {
+
+
+                    order_coll.delivered_orders = del_response;
+                 
+                }
+                else {
+
+                    order_coll.delivered_orders = [];
+                   
+                }
+
+                // 2 nd Callback
+
+                db.order_infos.find(
+
+                    {
+                        $and: [{ user_id: mongojs.ObjectId('59158a3ebab3ea5cfdbc27c3') },
+                        { order_status: { $in: ['pending', 'confirmed', 'ready_for_del'] } },
+                         { date: '21/07/2017'}
+                        ]
+                    }
+
+                ).sort({ '_id': -1 }, function (err, open_response) {
+
+
+                    if (err) {
+
+                        res.send(err);
+
+                    }
+                    else {
+                        //  res.send(del_response);
+                        if (open_response.length > 0) {
+
+                            order_coll.open_orders = open_response;
+                          
+
+                        }
+                        else {
+
+                            order_coll.open_orders = [];
+                           
+                        }
+
+
+                        // 3 rd Callback
+
+                        db.order_infos.find(
+
+                            {
+                                $and: [{ user_id: mongojs.ObjectId('59158a3ebab3ea5cfdbc27c3') },
+                                { order_status: { $in: ['cancelled'] } },
+                                 { date: '21/07/2017'}
+                                ]
+                            }
+
+                        ).sort({ '_id': -1 }, function (err, cancel_response) {
+
+
+                            if (err) {
+
+                                res.send(err);
+
+                            }
+                            else {
+                                //  res.send(del_response);
+                                if (cancel_response.length > 0) {
+
+                                    order_coll.cancelled_orders = cancel_response;
+                                    
+
+                                }
+                                else {
+
+                                    order_coll.cancelled_orders = [];
+                                   
+                                }
+
+
+                                res.send(order_coll);
+
+                            }
+                        });
+
+                        //res.send(final_coll);
+
+                    }
+                });
+
+
+
+            }
+        });
+
+
+        // db.order_infos.find(
+        //     {}
+        //     // {user_id:mongojs.ObjectId('598c29b5e4f4aa065fe238b6')}
+
+
+        // ,function(data){
+
+        // console.log(data);
+        //     res.send(data);
+        // }
+        // );
+
+    });
