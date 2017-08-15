@@ -1,0 +1,18 @@
+    // db.pay_commission_info.aggregate(
+        //     [
+        //     {
+        //         $group: {
+        //              _id: null, 
+        //             totalPrice: { $sum: {$multiply:["$amount",1]  }},
+        //              count: { $sum: 1 }
+        //         },
+               
+
+
+        //     }
+              
+        //     ]
+        //     , function (err, data) {
+
+        //         res.send(data);
+        //     });
