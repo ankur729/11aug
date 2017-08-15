@@ -1,0 +1,53 @@
+ db.order_infos.aggregate(
+            
+              {
+                "$match": { order_status: 'delivered'} 
+            },
+            {
+                "$match": { time:{$gte:1501839767504,$lte:1502367706726}} 
+            },
+             
+            {
+                $lookup: {
+                    from: 'cook_infos',
+                    localField: 'cook_id',
+                    foreignField: '_id',
+                    as: 'cook_data'
+
+                }
+
+            },
+            {
+                $lookup: {
+                    from: 'pay_commission_info',
+                    localField: 'order_id',
+                    foreignField: 'orderid',
+                    as: 'comission_data'
+
+                }
+
+            },
+            { $project: { order_id: 1, date: 1, time: 1, 'items': 1, 'cook_data.cook_commission': 1, 'cook_data.is_gstin': 1, 'cook_data.cook_name': 1, 'cook_data._id:': 1, 'comission_data': 1 } }
+
+        ).sort({ 'time': -1 }, function (err, data) {
+
+        if(err){
+            res.send(data);
+        }
+
+            // for (var i = 0; i < data.length; i++) {
+
+
+            //     if (data[i].comission_data.length < 1) {
+            //         data[i].paid_status = 'unpaid'
+            //     }
+            //     if (data[i].comission_data.length > 0) {
+            //         data[i].paid_status = 'paid'
+            //     }
+            // }
+
+            res.send(data);
+        }
+
+            );
+
